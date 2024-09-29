@@ -4,18 +4,16 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes"
 import {
   ClerkProvider,
-  SignInButton,
   SignedIn,
-  SignedOut,
-  UserButton
 } from '@clerk/nextjs'
 import './globals.css'
 
 
 
+import { ReactNode } from 'react';
 
 interface RootLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {

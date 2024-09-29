@@ -67,8 +67,18 @@ const config: Config = {
   			marquee: 'marquee var(--duration) infinite linear',
   			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
   			rainbow: 'rainbow var(--speed, 2s) infinite linear',
-  			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear'
+  			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
+			typing: "typing 2s steps(20) infinite alternate, blink .7s infinite",
   		},
+		//   blink: {
+		// 	"50%": {
+		// 	  borderColor: "transparent"
+		// 	},
+		// 	"100%": {
+		// 	  borderColor: "white"
+		// 	}  
+		//   }
+		// },
   		keyframes: {
   			'shimmer-slide': {
   				to: {
@@ -119,9 +129,10 @@ const config: Config = {
   				}
   			}
 			
-  		}
+  		},
+		 
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),require('@tailwindcss/typography'),],
 };
 export default config;
