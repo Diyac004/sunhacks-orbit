@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="w-full py-4 px-6 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">ORB1T</h1>
+        <h1 className="text-2xl font-bold">ORBIT</h1>
         <div className="flex items-center space-x-4">
           <ModeToggle />
           
@@ -48,8 +48,8 @@ export default function Home() {
       </header>
       
       <FlipText
-        className=" italic pointer-events-none bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10 mt-18 md:leading-[7rem]"
-        word="ORB1T"
+        className="pointer-events-none text-9xl bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center  font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10 mt-18 md:leading-[7rem]"
+        word="O R B I T"
       />
       
       <main className="flex flex-col items-center justify-center">
@@ -75,11 +75,6 @@ export default function Home() {
       <footer className="py-8">
      
       </footer>
-      <Marquee className="mt-20 text-2xl">
-          <span>Explore the world with us</span>
-          <span>Plan your next adventure</span>
-          <span>Discover new places</span>
-        </Marquee>
     </div>
   );
 };
