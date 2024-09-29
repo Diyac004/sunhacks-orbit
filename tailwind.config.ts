@@ -64,6 +64,8 @@ const config: Config = {
   		animation: {
   			'shimmer-slide': 'shimmer-slide var(--speed) ease-in-out infinite alternate',
   			'spin-around': 'spin-around calc(var(--speed) * 2) infinite linear',
+  			marquee: 'marquee var(--duration) infinite linear',
+  			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
   			rainbow: 'rainbow var(--speed, 2s) infinite linear',
   			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear'
   		},
@@ -87,6 +89,22 @@ const config: Config = {
   					transform: 'translateZ(0) rotate(360deg)'
   				}
   			},
+  			marquee: {
+  				from: {
+  					transform: 'translateX(0)'
+  				},
+  				to: {
+  					transform: 'translateX(calc(-100% - var(--gap)))'
+  				}
+  			},
+  			'marquee-vertical': {
+  				from: {
+  					transform: 'translateY(0)'
+  				},
+  				to: {
+  					transform: 'translateY(calc(-100% - var(--gap)))'
+				}
+			},
   			rainbow: {
   				'0%': {
   					'background-position': '0%'
@@ -100,6 +118,7 @@ const config: Config = {
   					'offset-distance': '100%'
   				}
   			}
+			
   		}
   	}
   },
