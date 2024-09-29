@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "next-themes"
-
+import './globals.css'
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  
   return (
-    <>
+
       <html lang="en" suppressHydrationWarning>
         <head />
         <body>
@@ -19,11 +20,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
             enableSystem
             disableTransitionOnChange
           >
+
             {children}
+            <main>
+            
+            </main>
           </ThemeProvider>
         </body>
       </html>
-    </>
+
   )
 }
 
