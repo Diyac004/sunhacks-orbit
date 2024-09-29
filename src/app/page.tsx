@@ -1,4 +1,4 @@
-import ModeToggle from '../app/components/ModeToggle'; 
+"use client"; 
 import FlipText from "../components/ui/flip-text";
 import Globe from "../components/ui/globe";
 import ShimmerButton from "../components/ui/shimmer-button";
@@ -10,13 +10,23 @@ import {
   SignedOut,
   UserButton
 } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'; 
+import ModeToggle from "./components/ModeToggle";
+import { useAuth} from '@clerk/nextjs';
 
 
 export default function Home() {
+  const router = useRouter();
+  
+  const handleGetStartedClick = () => {
+      router.push('/chatpage');
+  }
+  
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="w-full py-4 px-6 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Travel Planner</h1>
+        <h1 className="text-2xl font-bold">Orbit</h1>
         <div className="flex items-center space-x-4">
           <ModeToggle />
           
@@ -53,7 +63,6 @@ export default function Home() {
             Get Started
           </span>
         </ShimmerButton>
-
         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 scale-150 overflow-hidden w-full h-1/2">
           <Globe className="pointer-events-none" />
         </div>
@@ -62,4 +71,4 @@ export default function Home() {
       <footer className="py-8"></footer>
     </div>
   );
-}
+};
