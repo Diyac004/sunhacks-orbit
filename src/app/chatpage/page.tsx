@@ -45,7 +45,8 @@ export default function ChatPage() {
   const [city, setCity] = useState<string | undefined>();
   const [inputMessage, setInputMessage] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -63,7 +64,7 @@ export default function ChatPage() {
     
     try {
       const query = inputMessage;
-      const response = await fetch(`http://gemini-orbit-alb-954220856.us-west-2.elb.amazonaws.com/trip_plan?query=${encodeURIComponent(query)}`);
+      const response = await fetch(`${apiUrl}/trip_plan?query=${encodeURIComponent(query)}`);
       
       if (response.ok) {
         const data = await response.json();
