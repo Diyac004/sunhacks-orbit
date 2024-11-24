@@ -17,12 +17,12 @@ import GradualSpacing from "../components/ui/gradual-spacing";
 export default function Home() {
   const router = useRouter();
   const { isSignedIn } = useAuth();
-  
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const handleGetStartedClick = () => {
     if (isSignedIn) {
       router.push('/chatpage');
     } else {
-      router.push('https://fluent-koi-9.accounts.dev/sign-in?redirect_url=http%3A%2F%2Flocalhost%3A3000%2F'); 
+      router.push(`https://fluent-koi-9.accounts.dev/sign-in?redirect_url=${encodeURIComponent(baseUrl + '/chatpage')}`);
     }
   }
 
