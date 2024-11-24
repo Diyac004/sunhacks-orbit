@@ -20,6 +20,7 @@ interface ChatMessage {
   content: string;
   sender: 'user' | 'ai';
   flight_data?: FlightsData[];
+  itinerary?: string;
 }
 
 interface ChatHistory {
@@ -37,7 +38,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { id: 1, content: 'Howdy!', sender: 'ai' },
     { id: 2, content: 'Where are we headed? Drop your destination, budget, travelers, and any preferences.', sender: 'ai' },
-    { id: 3, content: 'Let’s plan this :)', sender: 'ai' },
+    { id: 3, content: 'Lets plan this :)', sender: 'ai' },
   ]);
   
   const [loading, setLoading] = useState(false);
@@ -51,29 +52,53 @@ export default function ChatPage() {
 
   const handleSendMessage = async () => {
     if (inputMessage.trim()) {
-      setMessages([...messages, { id: messages.length + 1, content: inputMessage + ` my location is ${city}`, sender: 'user' }]);
+      setMessages([...messages, { 
+        id: messages.length + 1, 
+        content: inputMessage + ` my location is ${city}`, 
+        sender: 'user' 
+      }]);
       setInputMessage('');
     }
-
     setLoading(true);
+    
+    try {
+      const query = inputMessage;
+      const response = await fetch(`http://gemini-orbit-alb-954220856.us-west-2.elb.amazonaws.com/trip_plan?query=${encodeURIComponent(query)}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log("API Response:", data); // Debug log
+        
+        let ourFlightData: FlightsData[] = [];
+        if (data.flight_data) {
+          ourFlightData = data.flight_data;
+        }
 
-    const response = await fetch("https://chamber-lasting-roger-forums.trycloudflare.com/trip_plan?query=" + inputMessage);
-
-    if (response.ok) {
-      const data = await response.json();
-
-      let ourFlightData: FlightsData[] = [];
-      if (data.flight_data) {
-        ourFlightData = data.flight_data
+        setMessages(oldMessages => [...oldMessages, { 
+          id: messages.length + 1, 
+          content: data.itinerary || 'No itinerary available',
+          sender: 'ai', 
+          flight_data: ourFlightData,
+          itinerary: data.itinerary
+        }]);
+      } else {
+        console.error('Failed to fetch data', response.statusText);
+        setMessages(oldMessages => [...oldMessages, { 
+          id: messages.length + 1, 
+          content: 'Sorry, I am unable to process your request.', 
+          sender: 'ai' 
+        }]);
       }
-
-      setMessages(oldMessages => [...oldMessages, { id: messages.length + 1, content: data.response, sender: 'ai', flight_data: ourFlightData }]);
-    } else {
-      console.error('Failed to fetch data', response.statusText, response.status, response.url, response.body);
-      setMessages(oldMessages => [...oldMessages, { id: messages.length + 1, content: 'Sorry, I am unable to process your request.', sender: 'ai' }]);
+    } catch (error) {
+      console.error('Error:', error);
+      setMessages(oldMessages => [...oldMessages, { 
+        id: messages.length + 1, 
+        content: 'An error occurred while processing your request.', 
+        sender: 'ai' 
+      }]);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(oldLoading => !oldLoading);
   };
 
   useEffect(() => {
@@ -129,7 +154,14 @@ export default function ChatPage() {
                       ? 'bg-blue-500 text-white' 
                       : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200'
                   } prose lg:prose-lg max-w-prose dark:prose-invert`}>
-                    <Markdown>{message.content}</Markdown>
+                    {message.sender === 'ai' && message.itinerary ? (
+                      <div>
+                        <Markdown>{message.itinerary}</Markdown>
+                        
+                      </div>
+                    ) : (
+                      <Markdown>{message.content}</Markdown>
+                    )}
                   </div>
                 </div>
                 <div className="col-span-1">
@@ -158,7 +190,7 @@ export default function ChatPage() {
                 className="flex-grow bg-transparent border-none focus:ring-0"
               />
               <RainbowButton onClick={async () => await handleSendMessage()}>
-                <Send className=" flex h-4 w-4 mr-2" />
+                <Send className="flex h-4 w-4 mr-2" />
                 Send
               </RainbowButton>
             </div>
